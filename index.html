@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animated Counter</title>
+    <style>
+        *{
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body{
+            font-family: Arial, sans-serif;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .header{
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .header h1{
+            font-size: 2.5rem;
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .wrapper{
+            max-width: 1000px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 50px 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .counters{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            justify-content: center;
+        }
+
+        .counter-item{
+            text-align: center;
+            min-width: 180px;
+            transition: all 0.3s ease;
+        }
+
+        .counter-item:hover{
+            transform: translateY(-3px);
+        }
+
+        .icon{
+            font-size: 2.8rem;
+            color: #667eea;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .counter-item:hover .icon{
+            transform: scale(1.1);
+            color: #5a67d8;
+        }
+
+        .counter{
+            font-size: 2.8rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin: 15px 0;
+            transition: all 0.2s ease;
+        }
+
+        .counter.updating{
+            transform: scale(1.1);
+            color: #667eea;
+        }
+
+        .counter-item h3{
+            font-size: 1.1rem;
+            color: #5a6c7d;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 500;
+        }
+
+        /* Simple responsive */
+        @media (max-width: 768px) {
+            .wrapper{
+                margin: 20px;
+                padding: 30px 20px;
+            }
+            
+            .counters{
+                flex-direction: column;
+                align-items: center;
+                gap: 30px;
+            }
+            
+            .counter-item{
+                width: 100%;
+                max-width: 250px;
+            }
+            
+            .header h1{
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Statistics Dashboard</h1>
+    </div>
+
+    <div class="wrapper">
+        <div class="counters">
+            <div class="counter-item">
+                <div class="icon">💻</div>
+                <div class="counter" data-target="4000">0</div>
+                <h3>Web Projects</h3>
+            </div>
+
+            <div class="counter-item">
+                <div class="icon">📚</div>
+                <div class="counter" data-target="1000">0</div>
+                <h3>Courses</h3>
+            </div>
+
+            <div class="counter-item">
+                <div class="icon">😊</div>
+                <div class="counter" data-target="90000">0</div>
+                <h3>Happy Students</h3>
+            </div>
+
+            <div class="counter-item">
+                <div class="icon">💡</div>
+                <div class="counter" data-target="5000">0</div>
+                <h3>Learnings</h3>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const counters = document.querySelectorAll(".counter");
+        const animationSpeed = 500;
+
+        const updateCounter = (counter) => {
+            const targetCount = +counter.getAttribute("data-target");
+            let currentCount = +counter.innerText;
+            const animationStep = targetCount / animationSpeed;
+
+            if(currentCount < targetCount){
+                counter.classList.add('updating');
+                counter.innerText = Math.floor(currentCount + animationStep);
+                
+                setTimeout(() => {
+                    updateCounter(counter);
+                }, 1); 
+            } else {
+                counter.classList.remove('updating');
+                counter.innerText = targetCount;
+            }
+        }
+
+        // Start animation when page loads
+        window.addEventListener('load', () => {
+            counters.forEach((counter) => {
+                updateCounter(counter);
+            });
+        });
+    </script>
+</body>
+</html>
